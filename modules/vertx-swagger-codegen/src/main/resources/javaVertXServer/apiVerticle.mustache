@@ -23,6 +23,14 @@ public class {{classname}}Verticle extends AbstractVerticle {
     //TODO : create Implementation
     {{classname}} service = new {{classname}}Impl();
 
+    private UUID parseUUID(String parse) {
+        return UUID.fromString(parse);
+    }
+
+    private String parseString(String parse) {
+        return parse;
+    }
+
     @Override
     public void start() throws Exception {
         {{#operations}}{{#operation}}
@@ -37,7 +45,7 @@ public class {{classname}}Verticle extends AbstractVerticle {
                         {{^isListContainer}}
                             {{#isPrimitiveType}}
                                 {{#isString}}
-                {{{dataType}}} {{paramName}} = message.body().getString("{{baseName}}");
+                {{{dataType}}} {{paramName}} = parse{{dataType}}(message.body().getString("{{baseName}}"));
                                 {{/isString}}
                                 {{^isString}}
                 {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getString("{{baseName}}"), {{{dataType}}}.class);
